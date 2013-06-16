@@ -14,7 +14,21 @@ public class Client{
 		}
 		
 		//uruchomienie
-		
+		try {
+			if(System.getSecurityManager() == null){
+				System.setSecurityManager(new RMISecurityManager());
+			}
+			Registry registry = LocateRegistry.getRegistry(Integer.valueOf(args[0]));
+	    	ServerInterface stub = (ServerInterface) registry.lookup("Server");
+			
+			params = stub.runGA(params);
+	    		    		
+    		
+	    		
+		} catch (Exception e) {
+		    	System.err.println("Client exception: " + e.toString());
+		    	e.printStackTrace();
+		}
 		//
 		printIndividual(params);
 	}
