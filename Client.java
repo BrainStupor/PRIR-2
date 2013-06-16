@@ -54,8 +54,8 @@ public class Client{
 				for(int j = 0; j < 8; ++j){
 					out.print("Lekcja #" + (j+1) + ":\t");
 					for(int k = 0; k < 10; ++k){
-						if(params.class_ids[i * 8 + j][k] != -1){
-							out.print( "(" + params.subject_ids[i * 8 + j][k] + "," + params.class_ids[i * 8 + j][k] + "," + params.teacher_ids[i * 8 + j][k] + ")\t");
+						if(params.class_ids[(i*8+j)*10 + k] != -1){
+							out.print( "(" + params.subject_ids[(i*8+j)*10 + k] + "," + params.class_ids[(i*8+j)*10 + k] + "," + params.teacher_ids[(i*8+j)*10 + k] + ")\t");
 						}
 						else{
 							out.print("(WOLNE)\t");
