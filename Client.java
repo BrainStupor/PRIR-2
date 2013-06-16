@@ -39,7 +39,7 @@ public class Client{
 			Scanner scan = new Scanner(new FileReader(fname));
 			for(int i = 0; i < 8; ++i){
 				for(int j = 0; j < 3; ++j){
-					params.teacherlist[i][j] = scan.nextInt();
+					params.teacherlist[i*3 + j] = scan.nextInt();
 				}
 			}
 			
