@@ -5,7 +5,7 @@
 
 
 JNIEXPORT jint JNICALL Java_runGA_runGA
-  (JNIEnv * , jobject , jintArray subject list, jintArray teacherlist, jint popsize, jintngen, jdouble pmut, jdouble pcross, jdoubleArray best_fitness, jintArray teacher_ids, jintArray room_ids, jintArray class_ids, jintArray subject_ids){
+  (JNIEnv * , jobject , jintArray subjectlist, jintArray teacherlist, jint popsize, jintngen, jdouble pmut, jdouble pcross, jdoubleArray best_fitness, jintArray teacher_ids, jintArray room_ids, jintArray class_ids, jintArray subject_ids){
 			
 	srand(time(0));
 	struct TimetableGA ga;	
