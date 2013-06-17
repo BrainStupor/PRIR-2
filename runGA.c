@@ -5,22 +5,33 @@
 
 
 JNIEXPORT jint JNICALL Java_runGA_runGA
-  (JNIEnv * , jobject , jintArray subjectlist, jintArray teacherlist, jint popsize, jint ngen, jdouble pmut, jdouble pcross, jdoubleArray best_fitness, jintArray teacher_ids, jintArray room_ids, jintArray class_ids, jintArray subject_ids){
+  (	JNIEnv * env, jobject object, jintArray subjectlist, jintArray teacherlist, 
+	jint popsize, jint ngen, jdouble pmut, jdouble pcross, 
+	jdoubleArray best_fitness, jintArray teacher_ids, jintArray room_ids, jintArray class_ids, jintArray subject_ids){
+
+
+	jint *sl = (*env)->GetIntArrayElements(env, subjectlist, 0);
+	jint *tl = (*env)->GetIntArrayElements(env, teacherlist, 0);
+	jdouble *bstfit = (*env)->GetDoubleArrayElements(env, best_fitness, 0);
+	jint *t_id = (*env)->GetIntArrayElements(env, teacher_ids, 0);
+	jint *r_id = (*env)->GetIntArrayElements(env, room_ids, 0);
+	jint *c_id = (*env)->GetIntArrayElements(env, class_ids, 0);
+	jint *s_id = (*env)->GetIntArrayElements(env, subject_ids, 0);
 			
 	srand(time(0));
 	struct TimetableGA ga;	
 	
 	int i,j;
 	
-	initSubjectList(&subject_list);
+	initsl(&subject_list);
 	for(i = 0; i < SUBJECTS; ++i){
-		subject_list.hours[i] = subjectlist[i];
+		subject_list.hours[i] = sl[i];
 	}
 	
-	initTeacherList(&teacher_list);
+	inittl(&teacher_list);
 	for(i = 0; i < TEACHERS; ++i){
 		for(j = 0; j < MAX_SUBJECTS_PER_TEACHER; ++j){
-			teacher_list.subjects[i][j] = teacherlist[i*MAX_SUBJECTS_PER_TEACHER + j];
+			teacher_list.subjects[i][j] = tl[i*MAX_SUBJECTS_PER_TEACHER + j];
 		}
 	}
 	
@@ -50,21 +61,31 @@ JNIEXPORT jint JNICALL Java_runGA_runGA
 	}
 	
 	fitness(&(ga.population[0]));
-	*best_fitness = ga.population[0].fitness;
+	*bstfit = ga.population[0].fitness;
 	
 	
 	for(i = 0; i < DAYS*PERIODS_PER_DAY; ++i){
 		for(j = 0; j < CLASSROOMS; ++j){
-			teacher_ids[i*CLASSROOMS + j] = ga.population[0].genotype[i][j].teacher_id;
-			room_ids[i*CLASSROOMS + j] = ga.population[0].genotype[i][j].room_id;
-			class_ids[i*CLASSROOMS + j] = ga.population[0].genotype[i][j].class_id;
-			subject_ids[i*CLASSROOMS + j] = ga.population[0].genotype[i][j].subject_id;
+			t_id[i*CLASSROOMS + j] = ga.population[0].genotype[i][j].teacher_id;
+			r_id[i*CLASSROOMS + j] = ga.population[0].genotype[i][j].room_id;
+			c_id[i*CLASSROOMS + j] = ga.population[0].genotype[i][j].class_id;
+			s_id[i*CLASSROOMS + j] = ga.population[0].genotype[i][j].subject_id;
 		}
 	}
 	
 	finalizeGA(&ga);
 	freeClassList(&class_list);
-	freeSubjectList(&subject_list);
-	freeTeacherList(&teacher_list);
+	freesl(&subject_list);
+	freetl(&teacher_list);
+
+	(*env)->ReleaseIntArrayElements( env, subjectlist,0);
+	(*env)->ReleaseIntArrayElements(env, teacherlist, 0);
+	(*env)->ReleaseDoubleArrayElements(env, best_finess, 0);
+	(*env)->ReleaseIntArrayElements(env, teacher_ids, 0);
+	(*env)->ReleaseIntArrayElements(env, room_ids, 0);
+	(*env)->ReleaseIntArrayElements(env, class_ids, 0);
+	(*env)->ReleaseIntArrayElements(env, subject_ids, 0);
+
+
 }
 
