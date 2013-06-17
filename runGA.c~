@@ -2,9 +2,10 @@
 #include "runGA.h"
 #include "TimetableGA.h"	
 	
-int runGA(	int * subjectlist, int * teacherlist, 
-			int popsize, int ngen, double pmut, double pcross, 
-			double * best_fitness, int * teacher_ids, int * room_ids, int * class_ids, int * subject_ids){
+
+
+JNIEXPORT jint JNICALL Java_runGA_runGA
+  (JNIEnv * , jobject , jintArray subjectlist, jintArray teacherlist, jint popsize, jintngen, jdouble pmut, jdouble pcross, jdoubleArray best_fitness, jintArray teacher_ids, jintArray room_ids, jintArray class_ids, jintArray subject_ids){
 			
 	srand(time(0));
 	struct TimetableGA ga;	
