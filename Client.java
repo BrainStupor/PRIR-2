@@ -12,7 +12,7 @@ public class Client implements Serializable{
 	public static void main(String args[]){
 		System.setProperty("java.security.policy", "file:///home/stud0/i0barnus/prircpy/java.policy");
 		GAParams params = new GAParams();
-		try{
+		/*try{
 			loadGAParams("config.txt", params);
 			loadSubjectParams("subjects.txt", params);
 			loadTeacherParams("teachers.txt", params);
@@ -20,7 +20,25 @@ public class Client implements Serializable{
 		catch(IOException ex){
 			System.out.println("Blad podczas odczytywania parametrow!");
 			ex.printStackTrace();
-		}
+		}*/
+		
+		//parametry
+		params.popsize = 200;
+		params.ngen = 1000;
+		params.pcross = 0.6;
+		params.pmut = 0.001;
+		params.subjectlist = new int[]{2, 5, 7, 8, 6, 8};
+		params.teacherlist = new int[]{3, -1, -1, 5, -1, -1, 0, 2, -1, 2, 4, -1, 0, 5, -1, 1, 3, -1, 2, 4, -1, 0, 1, 4};
+		/*
+		3 -1 -1
+		5 -1 -1
+		0 2 -1
+		2 4 -1
+		0 5 -1
+		1 3 -1
+		2 4 -1
+		0 1 4
+		*/
 		
 		//uruchomienie
 		try {
