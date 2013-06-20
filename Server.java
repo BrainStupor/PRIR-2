@@ -11,6 +11,13 @@ public class Server implements GAInterface{
 		System.loadLibrary("Server");
 	} 
     
+	public GAParams remote_runGA( GAParams parameters ) throws RemoteException{
+		int runga_err = runGA(	parameters.subjectlist, parameters.teacherlist, 
+										parameters.popsize, parameters.ngen, parameters.pmut, parameters.pcross,
+										parameters.best_fitness, parameters.teacher_ids, parameters.room_ids, parameters.class_ids, parameters.subject_ids);
+		return parameters;
+	}
+	
     public native int runGA(	int  subjectlist[], int  teacherlist[], 		
 			int popsize, int ngen, double pmut, double pcross, 
 			double best_fitness[], int teacher_ids[], int room_ids[], int  class_ids[], int  subject_ids[]);
@@ -35,12 +42,7 @@ public class Server implements GAInterface{
 		}
 	}
 
-	public GAParams remote_runGA( GAParams parameters ) throws RemoteException{
-		int runga_err = runGA(	parameters.subjectlist, parameters.teacherlist, 
-										parameters.popsize, parameters.ngen, parameters.pmut, parameters.pcross,
-										parameters.best_fitness, parameters.teacher_ids, parameters.room_ids, parameters.class_ids, parameters.subject_ids);
-		return parameters;
-	}
+	
 }
 
 /*
