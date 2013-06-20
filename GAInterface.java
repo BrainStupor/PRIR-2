@@ -1,5 +1,5 @@
 import java.rmi.*;
 
-public interface GMInterface extends Remote{   
-   public GAParams runGA( GAParams parameters ) throws RemoteException;
+public interface GAInterface extends Remote{   
+   public GAParams remote_runGA( GAParams parameters ) throws RemoteException;
 }

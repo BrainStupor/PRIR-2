@@ -1,7 +1,16 @@
-import java.io.*;
+import java.io.FileWriter;
+import java.io.FileReader;
+import java.io.Serializable;
+import java.io.IOException;
+import java.rmi.*;
+import java.util.Scanner;
+import java.rmi.registry.Registry;
+import java.rmi.registry.LocateRegistry;
 
-public class Client{
+
+public class Client implements Serializable{
 	public static void main(String args[]){
+		System.setProperty("java.security.policy", "file:///home/stud0/i0barnus/prircpy/java.policy");
 		GAParams params = new GAParams();
 		try{
 			loadGAParams("config.txt", params);
@@ -9,7 +18,7 @@ public class Client{
 			loadTeacherParams("teachers.txt", params);
 		}
 		catch(IOException ex){
-			System.out.println("B³¹d podczas odczytywania parametrów!");
+			System.out.println("Blad podczas odczytywania parametrow!");
 			ex.printStackTrace();
 		}
 		
@@ -19,22 +28,22 @@ public class Client{
 				System.setSecurityManager(new RMISecurityManager());
 			}
 			Registry registry = LocateRegistry.getRegistry(Integer.valueOf(args[0]));
-	    	ServerInterface stub = (ServerInterface) registry.lookup("Server");
+	    		GAInterface stub = (GAInterface) registry.lookup("Server");
 			
-			params = stub.runGA(params);
+			params = stub.remote_runGA(params);
 	    		    		
-    		
+    		printIndividual("najlepszy.txt", params);
 	    		
 		} catch (Exception e) {
 		    	System.err.println("Client exception: " + e.toString());
 		    	e.printStackTrace();
 		}
 		//
-		printIndividual(params);
+		
 	}
 	
 	
-		public static void loadGAParams(String fname, GAParams params){
+		public static void loadGAParams(String fname, GAParams params) throws IOException{
 			Scanner scan = new Scanner(new FileReader(fname));
 			params.popsize = scan.nextInt();
 			params.ngen = scan.nextInt();
@@ -42,14 +51,14 @@ public class Client{
 			params.pmut = scan.nextDouble();
 		}
 		
-		public static void loadSubjectParams(String fname, GAParams params){
+		public static void loadSubjectParams(String fname, GAParams params)throws IOException{
 			Scanner scan = new Scanner(new FileReader(fname));
 			for(int i = 0; i < 6; ++i){
 				params.subjectlist[i] = scan.nextInt();
 			}
 		}
 			
-		public static void loadTeacherParams(String fname, GAParams params){
+		public static void loadTeacherParams(String fname, GAParams params)throws IOException{
 			Scanner scan = new Scanner(new FileReader(fname));
 			for(int i = 0; i < 8; ++i){
 				for(int j = 0; j < 3; ++j){
@@ -59,31 +68,30 @@ public class Client{
 			
 		}
 		
-		public static void printIndividual(String fname, GAParams params){
+		public static void printIndividual(String fname, GAParams params)throws IOException{
 			System.out.println("Dostosowanie najlepszego osobnika: " + params.best_fitness[0] + "/5000");
-			FileWriter out = new Filewriter(fname);
-			out.print("Oznaczenia: (id_przedmiotu, id_klasy, id_nauczyciela)\n");
+			FileWriter out = new FileWriter(fname);
+			out.write("Oznaczenia: (id_przedmiotu, id_klasy, id_nauczyciela)\n");
 			for(int i = 0; i < 5; ++i){
-				out.print("Dzien " + (i+1) + ":\n");
+				out.write("Dzien " + (i+1) + ":\n");
 				for(int j = 0; j < 8; ++j){
-					out.print("Lekcja #" + (j+1) + ":\t");
+					out.write("Lekcja #" + (j+1) + ":\t");
 					for(int k = 0; k < 10; ++k){
 						if(params.class_ids[(i*8+j)*10 + k] != -1){
-							out.print( "(" + params.subject_ids[(i*8+j)*10 + k] + "," + params.class_ids[(i*8+j)*10 + k] + "," + params.teacher_ids[(i*8+j)*10 + k] + ")\t");
+							out.write( "(" + params.subject_ids[(i*8+j)*10 + k] + "," + params.class_ids[(i*8+j)*10 + k] + "," + params.teacher_ids[(i*8+j)*10 + k] + ")\t");
 						}
 						else{
-							out.print("(WOLNE)\t");
+							out.write("(WOLNE)\t");
 						}
 					}
-					out.print("\n");
+					out.write("\n");
 				}
-				out.print("\n");
+				out.write("\n");
 			}
 		}
 	}
 	
 	
-};
 
 /*fprintf(out, "Oznaczenia: (id_przedmiotu, id_klasy, id_nauczyciela)\n");
 	int i,j,k;
