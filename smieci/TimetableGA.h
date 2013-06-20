@@ -1,6 +1,3 @@
-#ifndef TIMETABLE
-#define TIMETABLE
-
 #include <time.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -554,6 +551,3 @@ void fitness(struct Individual *ind){
 	ind -> fitness = MAX_FIT - cost;
 	//printf("%f ", cost);
 }
-
-
-#endif
