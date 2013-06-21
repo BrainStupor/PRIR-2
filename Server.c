@@ -23,12 +23,12 @@ JNIEXPORT jint JNICALL Java_Server_runGA
 	
 	int i,j;
 	
-	initsl(&subject_list);
+	initSubjectList(&subject_list);
 	for(i = 0; i < SUBJECTS; ++i){
 		subject_list.hours[i] = sl[i];
 	}
 	
-	inittl(&teacher_list);
+	initTeacherList(&teacher_list);
 	for(i = 0; i < TEACHERS; ++i){
 		for(j = 0; j < MAX_SUBJECTS_PER_TEACHER; ++j){
 			teacher_list.subjects[i][j] = tl[i*MAX_SUBJECTS_PER_TEACHER + j];
